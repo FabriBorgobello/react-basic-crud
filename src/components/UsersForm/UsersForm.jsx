@@ -9,7 +9,7 @@ const UsersForm = ({
 }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (selectedUser) {
+    if (selectedUser?.id) {
       updateUser(selectedUser);
     } else {
       createUser(selectedUser);
