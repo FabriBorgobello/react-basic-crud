@@ -1,10 +1,9 @@
 import React from "react";
-import UsersTable from "./components/UsersTable/UsersTable";
+import UsersPage from "./pages/Users/Users";
 
 const App = () => (
   <div>
-    <h1>Welcome</h1>
-    <UsersTable />
+    <UsersPage />
   </div>
 );
 

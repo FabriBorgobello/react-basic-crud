@@ -1,7 +1,19 @@
+.container {
+  width: 100;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+.toolbar {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+}
 .table{
   width: 100%;
   border: 1px solid #e1e1e1;
-  margin-top: 2rem;
 }
 
 .tableRow {

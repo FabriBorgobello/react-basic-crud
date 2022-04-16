@@ -1,18 +1,24 @@
 import React from "react";
-import useUsers from "./hooks/useUsers";
 import css from "./UsersTable.module.css";
 
-const UsersTable = () => {
-  const { data: users, isLoading, error, deleteUser } = useUsers();
+const DEFAULT_VALUE = {
+  name: "",
+  username: "",
+  email: "",
+  phone: "",
+  website: "",
+};
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
-
-  return (
+const UsersTable = ({ users, deleteUser, setSelectedUser }) => (
+  <div className={css.container}>
+    <div className={css.toolbar}>
+      <button
+        className={css.tableActionButton}
+        onClick={() => setSelectedUser(DEFAULT_VALUE)}
+      >
+        Add User
+      </button>
+    </div>
     <table className={css.table}>
       <thead>
         <tr className={css.tableRow}>
@@ -23,24 +29,40 @@ const UsersTable = () => {
         </tr>
       </thead>
       <tbody>
+        {users.length === 0 && (
+          <tr className={css.tableRow}>
+            <td className={css.tableCell}>
+              <p className={css.emptyState}>No users found</p>
+            </td>
+          </tr>
+        )}
         {users.map((user) => (
-          <UserTableRow key={user.id} user={user} deleteUser={deleteUser} />
+          <UserTableRow
+            key={user.id}
+            user={user}
+            deleteUser={deleteUser}
+            setSelectedUser={setSelectedUser}
+          />
         ))}
-        {users.length === 0 && <p className={css.emptyState}>No users found</p>}
       </tbody>
     </table>
-  );
-};
+  </div>
+);
 
 export default UsersTable;
 
-const UserTableRow = ({ user, deleteUser }) => (
+const UserTableRow = ({ user, deleteUser, setSelectedUser }) => (
   <tr className={css.tableRow}>
     <td className={css.tableCell}>{user?.name}</td>
     <td className={css.tableCell}>{user?.username}</td>
     <td className={css.tableCell}>{user?.email}</td>
     <td className={css.tableActions}>
-      <button className={css.tableActionButton}>Edit</button>
+      <button
+        className={css.tableActionButton}
+        onClick={() => setSelectedUser(user)}
+      >
+        Edit
+      </button>
       <button
         className={css.tableActionButton}
         onClick={() => deleteUser(user?.id)}

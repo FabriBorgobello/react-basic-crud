@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  deleteEndpoint,
-  getEndpoint,
-  postEndpoint,
-  putEndpoint,
-} from "../../../api";
+import { deleteEndpoint, getEndpoint, postEndpoint, putEndpoint } from "../api";
 
 const useUsers = () => {
   const [data, setData] = useState([]);
