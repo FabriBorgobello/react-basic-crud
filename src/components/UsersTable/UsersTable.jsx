@@ -3,7 +3,7 @@ import useUsers from "./hooks/useUsers";
 import css from "./UsersTable.module.css";
 
 const UsersTable = () => {
-  const { data: users, isLoading, error } = useUsers();
+  const { data: users, isLoading, error, deleteUser } = useUsers();
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -24,8 +24,9 @@ const UsersTable = () => {
       </thead>
       <tbody>
         {users.map((user) => (
-          <UserTableRow key={user.id} user={user} />
+          <UserTableRow key={user.id} user={user} deleteUser={deleteUser} />
         ))}
+        {users.length === 0 && <p className={css.emptyState}>No users found</p>}
       </tbody>
     </table>
   );
@@ -33,14 +34,19 @@ const UsersTable = () => {
 
 export default UsersTable;
 
-const UserTableRow = ({ user }) => (
+const UserTableRow = ({ user, deleteUser }) => (
   <tr className={css.tableRow}>
     <td className={css.tableCell}>{user?.name}</td>
     <td className={css.tableCell}>{user?.username}</td>
     <td className={css.tableCell}>{user?.email}</td>
     <td className={css.tableActions}>
       <button className={css.tableActionButton}>Edit</button>
-      <button className={css.tableActionButton}>Delete</button>
+      <button
+        className={css.tableActionButton}
+        onClick={() => deleteUser(user?.id)}
+      >
+        Delete
+      </button>
     </td>
   </tr>
 );

@@ -37,3 +37,9 @@
   background-color: #001b3b;
   color: #fff;
 }
+.emptyState {
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  color: #001b3b;
+}
