@@ -1,4 +1,10 @@
 import { useEffect, useState } from "react";
+import {
+  deleteEndpoint,
+  getEndpoint,
+  postEndpoint,
+  putEndpoint,
+} from "../../../api";
 
 const useUsers = () => {
   const [data, setData] = useState([]);
@@ -9,13 +15,8 @@ const useUsers = () => {
     const fetchUsers = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/users`);
-        if (response.ok) {
-          const json = await response.json();
-          setData(json);
-        } else {
-          throw new Error(response.statusText);
-        }
+        const users = await getEndpoint("/users");
+        setData(users);
       } catch (err) {
         setError(err);
       } finally {
@@ -27,17 +28,8 @@ const useUsers = () => {
 
   const createUser = async (user) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user),
-      });
-      if (response.ok) {
-        const json = await response.json();
-        setData([...data, json]);
-      } else {
-        throw new Error(response.statusText);
-      }
+      const newUser = await postEndpoint("/users", user);
+      setData([...data, newUser]);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
@@ -46,20 +38,8 @@ const useUsers = () => {
 
   const updateUser = async (user) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/users/${user.id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(user),
-        }
-      );
-      if (response.ok) {
-        const json = await response.json();
-        setData(data.map((e) => (e.id === json.id ? json : e)));
-      } else {
-        throw new Error(response.statusText);
-      }
+      const updatedUser = await putEndpoint(`/users/${user.id}`, user);
+      setData(data.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
@@ -68,15 +48,8 @@ const useUsers = () => {
 
   const deleteUser = async (userId) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/users/${userId}`,
-        { method: "DELETE" }
-      );
-      if (response.ok) {
-        setData((prev) => prev.filter((e) => e.id !== userId));
-      } else {
-        throw new Error(response.statusText);
-      }
+      await deleteEndpoint(`/users/${userId}`);
+      setData(data.filter((u) => u.id !== userId));
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
