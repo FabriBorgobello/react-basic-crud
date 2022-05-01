@@ -24,7 +24,7 @@ const useUsers = () => {
   const createUser = async (user) => {
     try {
       const newUser = await postEndpoint("/users", user);
-      setData([...data, newUser]);
+      setData((prev) => [...prev, newUser]);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
@@ -34,7 +34,9 @@ const useUsers = () => {
   const updateUser = async (user) => {
     try {
       const updatedUser = await putEndpoint(`/users/${user.id}`, user);
-      setData(data.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
+      setData((prev) =>
+        prev.map((u) => (u.id === updatedUser.id ? updatedUser : u))
+      );
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
@@ -44,7 +46,7 @@ const useUsers = () => {
   const deleteUser = async (userId) => {
     try {
       await deleteEndpoint(`/users/${userId}`);
-      setData(data.filter((u) => u.id !== userId));
+      setData((prev) => prev.filter((u) => u.id !== userId));
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
